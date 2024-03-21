@@ -1,80 +1,55 @@
+# Document Metadata Extractor
 
-
-This Python script showcases the implementation of Named Entity Recognition (NER) using BERT (Bidirectional Encoder Representations from Transformers), a state-of-the-art transformer-based model. The script covers various stages, including dataset loading, text tokenization, model definition, and training with the goal of identifying and classifying entities within a given text.
+This repository contains a Python-based project designed to extract specific metadata from documents, regardless of their format (docx or scanned images). The system leverages Named Entity Recognition (NER) with spaCy for text documents and OCR with Tesseract for scanned images. The extracted metadata includes Agreement Value, Agreement Start Date, Agreement End Date, Renewal Notice (Days), Party One, and Party Two.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Dataset](#dataset)
-- [Dependencies](#dependencies)
-- [Explanation](#explanation)
-
+- [Data Preparation](#data-preparation)
+- [Model Training](#model-training)
+- [Evaluation](#evaluation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
-1. Clone the repository:
+Ensure you have Python 3.6 or higher installed. Then, install the required libraries:
 
-   ```b
-   git clone https://github.com/sana-7123/ner-with-bert.git
-   ```
+```bash
+pip install spacy transformers pytesseract opencv-python-headless
+```
 
-2. Navigate to the project directory:
+Download the English model for spaCy:
 
-   ```
-   cd ner-with-bert
-   ```
-
-3. Install the required dependencies:
-
-   ```
-   pip install -r requirements.txt
-   ```
+```bash
+python -m spacy download en_core_web_sm
+```
 
 ## Usage
 
-Run the main script to perform Named Entity Recognition using BERT.
+1. **Preprocess Data**: Run the `preprocess_data` function to extract text from your documents. This function supports both `.docx` and `.png` files.
 
-```
-python ner_with_bert.py
-```
+2. **Train the Model**: Use the provided script to train the NER model on your dataset. Ensure you have a labeled dataset ready for training.
 
-Ensure the script is customized with your dataset path, and adjust hyperparameters if necessary.
+3. **Evaluate the Model**: After training, evaluate the model's performance on a test set to ensure it meets your requirements.
 
-## Dataset
+## Data Preparation
 
-The script assumes a CSV dataset (`train.csv`) containing text data and corresponding token-level labels for Named Entity Recognition. The dataset structure should include at least the following columns:
+The `preprocess_data` function is designed to handle both `.docx` and `.png` files. For `.docx` files, it extracts text using the `python-docx` library. For `.png` files, it uses OCR with Tesseract to convert images to text.
 
-- `text`: Represents the input text data.
-- `labels`: Provides token-level labels indicating the entities present in the text.
+## Model Training
 
-It is imperative to ensure that your dataset contains the required `labels` column with token-level annotations, crucial for training a successful NER model.
+The model is trained using spaCy's NER capabilities. You'll need a labeled dataset for training. The training script demonstrates how to add labels to the NER component and train the model on your dataset.
 
-## Dependencies
+## Evaluation
 
-The script relies on two essential libraries:
+The evaluation script calculates the recall for each field as per the criteria provided. It compares the model's predictions against the true values in the test set.
 
-- **datasets:** This library, provided by Hugging Face, facilitates easy loading and management of datasets.
-- **transformers:** Developed by Hugging Face as well, this library includes pre-trained transformer-based models, such as BERT, for various natural language processing tasks.
+## Contributing
 
-## Explanation
+Contributions are welcome! Please feel free to submit pull requests or open issues for any improvements or bug fixes.
 
-### 1. Loading the Dataset
+## License
 
-The script incorporates the Hugging Face `datasets` library to efficiently load a CSV dataset (`train.csv`). The dataset should contain text data and associated token-level labels, necessary for the supervised training of a NER model.
-
-### 2. Tokenizing the Dataset
-
-Tokenization is a fundamental step in natural language processing tasks. The `BertTokenizerFast` from the `transformers` library is employed to tokenize the input text data. Tokenization involves breaking down the text into smaller units, such as words or subwords, to create a tokenized representation suitable for model input.
-
-### 3. Model Definition
-
-The script defines a BERT-based token classification model (`BertForTokenClassification`) using the `transformers` library. The choice of the number of labels (`num_labels`) is crucial and should align with the specific requirements of the NER task. This model is designed to predict entity labels for each token in the input sequence.
-
-### 4. Training
-
-The training process is configured using the `TrainingArguments` class, which allows the specification of various training parameters. These include output directories for model checkpoints, batch sizes for training and evaluation, training epochs, warm-up steps, and weight decay. The `Trainer` class, also from the `transformers` library, is initialized with the model, training arguments, and tokenized datasets. The model is then trained using the `train()` method, leveraging the power of BERT's contextual embeddings to capture intricate relationships within the input text.
-
-### 5. Evaluation
-
-After training, the script evaluates the model's performance on the evaluation dataset using the `evaluate()` method of the `Trainer`. This step provides valuable insights into the model's ability to correctly identify and classify entities within unseen text.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
