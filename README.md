@@ -50,6 +50,3 @@ The evaluation script calculates the recall for each field as per the criteria p
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for any improvements or bug fixes.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
